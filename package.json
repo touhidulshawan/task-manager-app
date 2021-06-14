@@ -1,0 +1,28 @@
+{
+  "name": "task-manager",
+  "version": "1.0.0",
+  "description": "crud app with nodejs mongose express typescript to learn backend",
+  "main": "app.js",
+  "author": "Touhidul Shawan",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node ./src/app.ts",
+    "start": "nodemon ./dist/app.js",
+    "prod": "yarn build && yarn start"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.13"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.12",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/mongodb": "^3.6.18",
+    "typescript": "^4.3.2"
+  }
+}

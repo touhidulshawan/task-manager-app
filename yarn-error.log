@@ -1,0 +1,43 @@
+Arguments: 
+  /home/shawan/.nvm/versions/node/v16.3.0/bin/node /usr/bin/yarn add express jasonwebtoken bcryptjs mongodb mongoose
+
+PATH: 
+  /home/shawan/.nvm/versions/node/v16.3.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.3.0
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/jasonwebtoken: Not found
+      at Request.params.callback [as _callback] (/usr/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/lib/node_modules/yarn/lib/cli.js:140749:22)
+      at Request.emit (node:events:394:28)
+      at Request.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:141721:10)
+      at Request.emit (node:events:394:28)
+      at IncomingMessage.<anonymous> (/usr/lib/node_modules/yarn/lib/cli.js:141643:12)
+      at Object.onceWrapper (node:events:513:28)
+      at IncomingMessage.emit (node:events:406:35)
+      at endReadableNT (node:internal/streams/readable:1329:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+    "name": "task-manager",
+    "version": "1.0.0",
+    "description": "crud app with nodejs mongose express typescript to learn backend",
+    "main": "app.js",
+    "author": "Touhidul Shawan",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
