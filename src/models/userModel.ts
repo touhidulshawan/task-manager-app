@@ -29,11 +29,14 @@ const UserSchema = new mongoose.Schema(
         message: "Password can not contain word password",
       },
     },
-    age: { type: Number, default: 0 },
-    validate: {
-      validator: (value: number) => value >= 0,
+    age: {
+      type: Number,
+      default: 0,
+      validate: {
+        validator: (value: number) => value >= 0,
+      },
+      message: "Age must be a positive number",
     },
-    message: "Age must be a positive number",
     avatar: {
       type: Buffer,
     },
