@@ -28,6 +28,7 @@ async function loginUserHandler(req: Request, res: Response) {
 // logout handler
 export async function logoutUserHandler(req: Request, res: Response) {
   try {
+    // write code here
     res.status(200).send({ message: "user logout" });
   } catch (error: any) {
     res.status(401).send(error.message);
