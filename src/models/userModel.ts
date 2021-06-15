@@ -48,6 +48,15 @@ const UserSchema = new mongoose.Schema(
     },
   },
   {
+    toObject: {
+      transform: function (doc, ret) {},
+    },
+    toJSON: {
+      transform: function (doc, ret) {
+        delete ret.password;
+        delete ret.tokens;
+      },
+    },
     timestamps: true,
   }
 );

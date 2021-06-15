@@ -1,13 +1,12 @@
 import { DocumentDefinition } from "mongoose";
-import { omit } from "lodash";
 import { IUser } from "../interfaces/IUser";
 import User from "../models/userModel";
 
 export async function createUser(input: DocumentDefinition<IUser>) {
   try {
-    const getUser = await User.create(input);
-    const token = await getUser.generateAuthToken();
-    return { getUser, token };
+    const user = await User.create(input);
+    const token = await user.generateAuthToken();
+    return { user, token };
   } catch (err: any) {
     throw new Error(err);
   }
@@ -20,16 +19,15 @@ export async function validatePassword({
   email: IUser["email"];
   password: string;
 }) {
-  const getUser: IUser | null = await User.findOne({ email });
+  const user: IUser | null = await User.findOne({ email });
 
-  if (!getUser) {
+  if (!user) {
     return false;
   }
-  const isValid = await getUser.comparePassword(password);
+  const isValid = await user.comparePassword(password);
   if (!isValid) {
     return false;
   }
-  const token = await getUser.generateAuthToken();
-  const user = omit(getUser.toJSON(), ["password", "tokens"]);
+  const token = await user.generateAuthToken();
   return { user, token };
 }
