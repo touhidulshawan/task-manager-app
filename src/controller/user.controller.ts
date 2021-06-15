@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { omit } from "lodash";
 import { createUser, validatePassword } from "../services/user.services";
+import { get } from "mongoose";
 
 export async function createUserHandler(req: Request, res: Response) {
   try {
@@ -14,11 +15,13 @@ export async function createUserHandler(req: Request, res: Response) {
 
 export async function loginUserHandler(req: Request, res: Response) {
   try {
-    const user = await validatePassword(req.body);
+    const getUser = await validatePassword(req.body);
 
-    if (!user) {
+    if (!getUser) {
       return res.status(401).send("Invalid username or password");
     }
+    const { user, token } = getUser;
+    res.send({ user, token });
   } catch (error: any) {
     return res.status(404).send(error.message);
   }

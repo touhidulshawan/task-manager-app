@@ -20,13 +20,16 @@ export async function validatePassword({
   email: IUser["email"];
   password: string;
 }) {
-  const user = await User.findOne({ email });
+  const getUser: IUser | null = await User.findOne({ email });
 
-  if (!user) {
+  if (!getUser) {
     return false;
   }
-  const isValid = await user.comparePassword(password);
-  if (!isValid) return false;
-
-  return omit(user.toJSON(), "password");
+  const isValid = await getUser.comparePassword(password);
+  if (!isValid) {
+    return false;
+  }
+  const token = await getUser.generateAuthToken();
+  const user = omit(getUser.toJSON(), ["password", "tokens"]);
+  return { user, token };
 }
