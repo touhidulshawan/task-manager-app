@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createUser, validatePassword } from "../services/user.services";
 
-export async function createUserHandler(req: Request, res: Response) {
+async function createUserHandler(req: Request, res: Response) {
   try {
     const { user, token } = await createUser(req.body);
     res.send({ user, token });
@@ -11,7 +11,7 @@ export async function createUserHandler(req: Request, res: Response) {
 }
 
 // login handler
-export async function loginUserHandler(req: Request, res: Response) {
+async function loginUserHandler(req: Request, res: Response) {
   try {
     const getUser = await validatePassword(req.body);
 
@@ -26,8 +26,19 @@ export async function loginUserHandler(req: Request, res: Response) {
 }
 
 // logout handler
-// export async function logoutUserHandler(req: Request, res: Response) {
-//  try {
-//
-//  }
+export async function logoutUserHandler(req: Request, res: Response) {
+  try {
+    res.status(200).send({ message: "user logout" });
+  } catch (error: any) {
+    res.status(401).send(error.message);
+  }
+}
+
+// if (req.user !== null) {
+//   req.user.tokens = req.user.tokens.filter((token) => {
+//     return token.token !== req.token;
+//   });
+//   await req.user.save();
+//   res.send();
 // }
+export default { createUserHandler, loginUserHandler, logoutUserHandler };

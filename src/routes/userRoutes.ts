@@ -1,15 +1,20 @@
 import { Express } from "express";
 import validateRequest from "../middlewares/validateRequest";
 import { createUserSchema } from "../schema/user.schema";
-import {
-  createUserHandler,
-  loginUserHandler,
-} from "../controller/user.controller";
+import controller from "../controller/user.controller";
+import extractJWT from "../middlewares/extractJWT";
 
 export default function (app: Express) {
   // create user
-  app.post("/users", validateRequest(createUserSchema), createUserHandler);
+  app.post(
+    "/users",
+    validateRequest(createUserSchema),
+    controller.createUserHandler
+  );
 
   // login user
-  app.post("/users/login", loginUserHandler);
+  app.post("/users/login", controller.loginUserHandler);
+
+  // logout user
+  app.post("/users/logout", extractJWT, controller.logoutUserHandler);
 }
