@@ -1,34 +1,12 @@
-import { IUser } from "../interfaces/IUser";
 import { Request, Response } from "express";
 import { createUser, validatePassword } from "../services/user.services";
-import signJWT from "../functions/signJWT";
 import User from "../models/userModel";
-import { ObjectID } from "mongodb";
-
-// save signedInUser
-const saveSignedUser = (req: Request, res: Response, user: IUser): void => {
-  signJWT(user, async (error, token) => {
-    if (error) {
-      return res.status(401).send("Invalid username or password");
-    } else if (token) {
-      const _id = new ObjectID();
-      user.tokens.concat({ _id, token });
-      await user.save();
-      res.status(200).json({
-        message: "Auth successful",
-        user,
-        token,
-      });
-    }
-  });
-};
 
 // create new user
 async function createUserHandler(req: Request, res: Response) {
   try {
-    const user = await createUser(req.body);
-    saveSignedUser(req, res, user);
-    res.status(201).send(user);
+    const { user, token } = await createUser(req.body);
+    res.status(201).send({ user, token });
   } catch (error: any) {
     return res.status(409).send(error.message);
   }
@@ -37,15 +15,15 @@ async function createUserHandler(req: Request, res: Response) {
 // login handler
 async function loginUserHandler(req: Request, res: Response) {
   try {
-    const user: IUser | false = await validatePassword(req.body);
+    const getUser = await validatePassword(req.body);
 
-    if (user === false) {
+    if (!getUser) {
       return res.status(400).send("Invalid username or password");
     }
-    saveSignedUser(req, res, user);
-    res.status(200).send(user);
+    const { user, token } = getUser;
+    res.status(200).send({ user, token });
   } catch (error: any) {
-    return res.status(404).send(error.message);
+    return res.status(401).send(error.message);
   }
 }
 

@@ -4,7 +4,9 @@ import User from "../models/userModel";
 
 export async function createUser(input: DocumentDefinition<IUser>) {
   try {
-    return await User.create(input);
+    const user = await User.create(input);
+    const token = await user.generateAuthToken();
+    return { user, token };
   } catch (err: any) {
     throw new Error(err);
   }
@@ -17,7 +19,7 @@ export async function validatePassword({
   email: IUser["email"];
   password: string;
 }) {
-  const user = await User.findOne({ email });
+  const user: IUser | null = await User.findOne({ email });
 
   if (!user) {
     return false;
@@ -26,5 +28,6 @@ export async function validatePassword({
   if (!isValid) {
     return false;
   }
-  return user;
+  const token = await user.generateAuthToken();
+  return { user, token };
 }
