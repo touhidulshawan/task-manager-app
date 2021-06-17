@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken";
 import config from "../config/config";
 import log from "../logger";
 
-const extractJWT = (req: Request, res: Response, next: NextFunction) => {
-  const NAMESPACES = "AUTH";
-  log.info(NAMESPACES);
+const NAMESPACES = "AUTH";
+log.info(NAMESPACES);
 
+const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   let token = req.headers.authorization?.split(" ")[1];
 
   if (token) {
