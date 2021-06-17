@@ -28,7 +28,7 @@ async function createUserHandler(req: Request, res: Response) {
   try {
     const user = await createUser(req.body);
     saveSignedUser(req, res, user);
-    res.send(user);
+    res.status(201).send(user);
   } catch (error: any) {
     return res.status(409).send(error.message);
   }
@@ -40,9 +40,10 @@ async function loginUserHandler(req: Request, res: Response) {
     const user: IUser | false = await validatePassword(req.body);
 
     if (user === false) {
-      return res.status(401).send("Invalid username or password");
+      return res.status(400).send("Invalid username or password");
     }
     saveSignedUser(req, res, user);
+    res.status(200).send(user);
   } catch (error: any) {
     return res.status(404).send(error.message);
   }

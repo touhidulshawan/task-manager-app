@@ -18,6 +18,7 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
         });
       } else {
         res.locals.jwt = decode;
+        res.locals.currentToken = token;
         next();
       }
     });
