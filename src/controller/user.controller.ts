@@ -26,7 +26,7 @@ async function loginUserHandler(req: Request, res: Response) {
         return res.status(401).send("Invalid username or password");
       } else if (token) {
         res.status(200).json({
-          message: "Auth successfull",
+          message: "Auth successful",
           user,
           token,
         });
