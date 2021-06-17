@@ -1,6 +1,9 @@
 import { Express } from "express";
 import validateRequest from "../middlewares/validateRequest";
-import { createUserSchema } from "../schema/user.schema";
+import {
+  createUserSchema,
+  createUserSessionSchema,
+} from "../schema/user.schema";
 import controller from "../controller/user.controller";
 
 export default function (app: Express) {
@@ -9,5 +12,12 @@ export default function (app: Express) {
     "/users",
     validateRequest(createUserSchema),
     controller.createUserHandler
+  );
+
+  // login user
+  app.post(
+    "/users/login",
+    validateRequest(createUserSessionSchema),
+    controller.userLoginHandler
   );
 }
