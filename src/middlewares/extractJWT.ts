@@ -1,11 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import config from "../config/config";
+import log from "../logger";
 
 const extractJWT = (req: Request, res: Response, next: NextFunction) => {
+  const NAMESPACES = "AUTH";
+  log.info(NAMESPACES);
+
   let token = req.headers.authorization?.split(" ")[1];
 
   if (token) {
-    jwt.verify(token, "mysecretkey", (error, decode) => {
+    jwt.verify(token, config.server.token.secret, (error, decode) => {
       if (error) {
         return res.status(404).json({
           message: error.message,
