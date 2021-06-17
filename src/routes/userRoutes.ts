@@ -18,6 +18,8 @@ export default function (app: Express) {
     validateRequest(userLoginSchema),
     controller.loginUserHandler
   );
+  // get user profile
+  app.get("/users/me", extractJWT, controller.getUserProfile);
 
   // logout user
   app.post("/users/logout", extractJWT, controller.logoutUserHandler);

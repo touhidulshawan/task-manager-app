@@ -2,7 +2,7 @@ import { IUser } from "./../interfaces/IUser";
 import { Request, Response } from "express";
 import { createUser, validatePassword } from "../services/user.services";
 import signJWT from "../functions/signJWT";
-import log from "../logger";
+import User from "../models/userModel";
 
 async function createUserHandler(req: Request, res: Response) {
   try {
@@ -25,7 +25,6 @@ async function loginUserHandler(req: Request, res: Response) {
       if (error) {
         return res.status(401).send("Invalid username or password");
       } else if (token) {
-        log.info("onlogin" + token);
         res.status(200).json({
           message: "Auth successfull",
           user,
@@ -38,6 +37,21 @@ async function loginUserHandler(req: Request, res: Response) {
   }
 }
 
+// get user profile after authorization
+
+async function getUserProfile(req: Request, res: Response) {
+  try {
+    const user = await User.findOne({ email: res.locals.jwt.email });
+    if (!user) {
+      res.status(404).send("User not found");
+    } else {
+      res.send(user);
+    }
+  } catch (error: any) {
+    res.status(500).send(error.message);
+  }
+}
+
 // logout handler
 export async function logoutUserHandler(req: Request, res: Response) {
   try {
@@ -47,4 +61,9 @@ export async function logoutUserHandler(req: Request, res: Response) {
   }
 }
 
-export default { createUserHandler, loginUserHandler, logoutUserHandler };
+export default {
+  createUserHandler,
+  loginUserHandler,
+  getUserProfile,
+  logoutUserHandler,
+};

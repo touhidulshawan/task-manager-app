@@ -12,9 +12,9 @@ const validate =
         params: req.params,
       });
       return next();
-    } catch (err) {
+    } catch (err: any) {
       log.error(err);
-      res.status(400).send(err.error);
+      res.status(400).send(err.message);
     }
   };
 
