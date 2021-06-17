@@ -1,6 +1,8 @@
-import { DocumentDefinition } from "mongoose";
+import { DocumentDefinition, FilterQuery, UpdateQuery } from "mongoose";
 import { IUser } from "../interfaces/IUser";
 import User from "../models/userModel";
+import { ISessionDocument } from "../interfaces/ISessionDocument";
+import UserSession from "../models/userSessionModel";
 
 export async function createUser(input: DocumentDefinition<IUser>) {
   try {
@@ -27,4 +29,15 @@ export async function validatePassword({
     return false;
   }
   return user;
+}
+
+export async function findUser(query: FilterQuery<IUser>) {
+  return User.findOne(query).lean();
+}
+
+export async function updateSession(
+  query: FilterQuery<ISessionDocument>,
+  update: UpdateQuery<ISessionDocument>
+) {
+  return UserSession.updateOne(query, update);
 }

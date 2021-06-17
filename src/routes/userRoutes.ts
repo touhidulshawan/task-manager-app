@@ -1,5 +1,5 @@
 import { Express } from "express";
-import validateRequest from "../middlewares/validateRequest";
+import { validateRequest, requireUser } from "../middlewares";
 import {
   createUserSchema,
   createUserSessionSchema,
@@ -16,8 +16,15 @@ export default function (app: Express) {
 
   // login user
   app.post(
-    "/users/login",
+    "/users/sessions",
     validateRequest(createUserSessionSchema),
     controller.userLoginHandler
+  );
+
+  // logout user
+  app.delete(
+    "/users/sessions",
+    requireUser,
+    controller.invalidateUserSessionHandler
   );
 }
