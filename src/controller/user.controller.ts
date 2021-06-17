@@ -1,6 +1,8 @@
 import { IUser } from "./../interfaces/IUser";
 import { Request, Response } from "express";
 import { createUser, validatePassword } from "../services/user.services";
+import signJWT from "../functions/signJWT";
+import log from "../logger";
 
 async function createUserHandler(req: Request, res: Response) {
   try {
@@ -19,6 +21,18 @@ async function loginUserHandler(req: Request, res: Response) {
     if (user === false) {
       return res.status(401).send("Invalid username or password");
     }
+    signJWT(user, (error, token) => {
+      if (error) {
+        return res.status(401).send("Invalid username or password");
+      } else if (token) {
+        log.info("onlogin" + token);
+        res.status(200).json({
+          message: "Auth successfull",
+          user,
+          token,
+        });
+      }
+    });
   } catch (error: any) {
     return res.status(404).send(error.message);
   }

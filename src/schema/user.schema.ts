@@ -15,3 +15,13 @@ export const createUserSchema = object({
     age: number().default(0).min(0, "Age must be integer"),
   }),
 });
+
+export const userLoginSchema = object({
+  body: object({
+    email: string().email("Must be valid email").required("Email is required"),
+    password: string()
+      .required("Password is required")
+      .min(8, "Password is too short - should 8 chars minimum")
+      .matches(/^[a-zA-Z0-9_.-]*$/, "Password can only contain latin letters"),
+  }),
+});
