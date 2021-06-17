@@ -7,7 +7,6 @@ export interface IUser extends Document {
   email: string;
   password: string;
   age?: number;
-  tokens: Array<{ _id: ObjectID; token: string }>;
   avatar?: Buffer;
   createdAt: Date;
   updatedAt: Date;

@@ -1,18 +1,12 @@
 import { connect } from "mongoose";
+import config from "../config/default";
 
-const url = "mongodb://127.0.0.1:27017/task-manager";
+const url = config.mongo.url;
+const options = config.mongo.options;
 
 export const connection = async () => {
   try {
-    await connect(url, {
-      user: "touhidulshawan",
-      pass: "shawan96",
-      authSource: "admin",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
-    });
+    await connect(url, options);
   } catch (error) {
     console.log(error);
     process.exit(1);
