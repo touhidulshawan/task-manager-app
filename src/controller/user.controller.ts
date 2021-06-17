@@ -1,10 +1,11 @@
+import { IUser } from "./../interfaces/IUser";
 import { Request, Response } from "express";
 import { createUser, validatePassword } from "../services/user.services";
 
 async function createUserHandler(req: Request, res: Response) {
   try {
-    const { user, token } = await createUser(req.body);
-    res.send({ user, token });
+    const user = await createUser(req.body);
+    res.send(user);
   } catch (error: any) {
     return res.status(409).send(error.message);
   }
@@ -13,13 +14,11 @@ async function createUserHandler(req: Request, res: Response) {
 // login handler
 async function loginUserHandler(req: Request, res: Response) {
   try {
-    const getUser = await validatePassword(req.body);
+    const user: IUser | false = await validatePassword(req.body);
 
-    if (!getUser) {
+    if (user === false) {
       return res.status(401).send("Invalid username or password");
     }
-    const { user, token } = getUser;
-    res.send({ user, token });
   } catch (error: any) {
     return res.status(404).send(error.message);
   }
@@ -34,11 +33,4 @@ export async function logoutUserHandler(req: Request, res: Response) {
   }
 }
 
-// if (req.user !== null) {
-//   req.user.tokens = req.user.tokens.filter((token) => {
-//     return token.token !== req.token;
-//   });
-//   await req.user.save();
-//   res.send();
-// }
 export default { createUserHandler, loginUserHandler, logoutUserHandler };

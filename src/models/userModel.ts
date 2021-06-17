@@ -39,10 +39,6 @@ const UserSchema = new mongoose.Schema(
       },
       message: "Age must be a positive number",
     },
-    tokens: {
-      type: [{ _id: ObjectID, token: String }],
-      required: true,
-    },
     avatar: {
       type: Buffer,
     },
@@ -54,7 +50,6 @@ const UserSchema = new mongoose.Schema(
     toJSON: {
       transform: function (doc, ret) {
         delete ret.password;
-        delete ret.tokens;
       },
     },
     timestamps: true,
@@ -72,15 +67,6 @@ UserSchema.pre("save", async function (next: mongoose.HookNextFunction) {
 UserSchema.methods.comparePassword = async function (userPassword: string) {
   const user = this as IUser;
   return bcrypt.compare(userPassword, user.password).catch((err) => false);
-};
-
-UserSchema.methods.generateAuthToken = async function () {
-  const user = this as IUser;
-  const token = jwt.sign({ _id: user._id.toString() }, "mysecretkey");
-  const _id = new ObjectID();
-  user.tokens = user.tokens.concat({ token, _id });
-  await user.save();
-  return token;
 };
 
 const User = mongoose.model<IUser>("User", UserSchema);
