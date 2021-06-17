@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import config from "../config/config";
 import log from "../logger";
 
@@ -7,25 +7,19 @@ const NAMESPACES = "AUTH";
 log.info(NAMESPACES);
 
 const extractJWT = (req: Request, res: Response, next: NextFunction) => {
-  let token = req.headers.authorization?.split(" ")[1];
-
-  if (token) {
-    jwt.verify(token, config.server.token.secret, (error, decode) => {
+  let token = req.header("Authorization")!.replace("Bearer ", "");
+  try {
+    jwt.verify(token, config.server.token.secret, (error: any, decode) => {
       if (error) {
-        return res.status(404).json({
-          message: error.message,
-          error,
-        });
-      } else {
-        res.locals.jwt = decode;
-        res.locals.currentToken = token;
-        next();
+        return res.status(404).send({ message: error.message });
       }
+      res.locals.jwt = decode;
+      res.locals.currentToken = token;
+      console.log(res.locals);
+      next();
     });
-  } else {
-    return res.status(401).json({
-      message: "Unauthorized",
-    });
+  } catch (err: any) {
+    res.status(401).send("Unauthorized access");
   }
 };
 

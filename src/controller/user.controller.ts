@@ -31,7 +31,7 @@ async function loginUserHandler(req: Request, res: Response) {
 
 async function getUserProfile(req: Request, res: Response) {
   try {
-    const user = await User.findOne({ email: res.locals.jwt.email });
+    const user = await User.findById(res.locals.jwt._id);
     if (!user) {
       res.status(404).send("User not found");
     } else {
