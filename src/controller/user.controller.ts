@@ -44,11 +44,20 @@ async function getUserProfile(req: Request, res: Response) {
 
 // logout handler
 export async function logoutUserHandler(req: Request, res: Response) {
-  try {
-    res.status(200).send({ message: "user logout" });
-  } catch (error: any) {
-    res.status(401).send(error.message);
-  }
+  // ! WRONG SOLUTION
+  // try {
+  //   let token: string | null = res.locals.currentToken;
+  //   const user = await User.findById(res.locals.jwt._id);
+  //   if (!user) {
+  //     return res.status(401).send("Unauthorized user");
+  //   }
+  //   user.tokens.filter((t) => t.token !== token);
+  //   await user.save();
+  //   token = null;
+  //   res.status(200).send({ token, message: "user logout successfully" });
+  // } catch (error: any) {
+  //   res.status(401).send(error.message);
+  // }
 }
 
 export default {

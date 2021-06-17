@@ -11,7 +11,7 @@ const extractJWT = (req: Request, res: Response, next: NextFunction) => {
   try {
     jwt.verify(token, config.server.token.secret, (error: any, decode) => {
       if (error) {
-        return res.status(404).send({ message: error.message });
+        return res.status(401).send({ message: "Unauthorized access", error });
       }
       res.locals.jwt = decode;
       res.locals.currentToken = token;
